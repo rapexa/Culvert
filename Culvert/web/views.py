@@ -18,8 +18,8 @@ def register(request):
         encoded = request.body
         json = loads(encoded.decode('utf-8'))
         
-        username = json['email']
-        password = json['password']
+        username = json['user']
+        password = json['pass']
 
         try:
 
@@ -29,7 +29,7 @@ def register(request):
             
             this_user = get_object_or_404(User, username=username)            
 
-            token = sha256(f"{this_user}-NoteMan".encode("utf-8")).hexdigest()
+            token = sha256(f"{this_user}-Culvert".encode("utf-8")).hexdigest()
             
             Token.objects.create(user=this_user,token=token)
                 
@@ -61,8 +61,8 @@ def login(request):
         encoded = request.body
         json = loads(encoded.decode('utf-8'))
 
-        username = json['email']
-        password = json['password']
+        username = json['user']
+        password = json['pass']
 
         this_user = get_object_or_404(User, username=username)
 
