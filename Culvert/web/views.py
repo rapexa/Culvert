@@ -1,3 +1,4 @@
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -29,9 +30,11 @@ def register(request):
             
             this_user = get_object_or_404(User, username=username)            
 
-            token = sha256(f"{this_user}-Culvert".encode("utf-8")).hexdigest()
+            refresh_token = RefreshToken.for_user(this_user)
+
+            # token = sha256(f"{this_user}-Culvert".encode("utf-8")).hexdigest()
             
-            Token.objects.create(user=this_user,token=token)
+            Token.objects.create(user=this_user,token=str(refresh_token.access_token))
                 
             return JsonResponse({
                 'data': "user created successfully",
