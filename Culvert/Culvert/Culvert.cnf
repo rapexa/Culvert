@@ -1,0 +1,6 @@
+# my.cnf
+[client]
+database = CulvertDB
+user = CulvertUser
+password = CulvertPass
+default-character-set = utf8
