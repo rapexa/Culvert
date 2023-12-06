@@ -7,8 +7,12 @@ from django.contrib.auth.hashers import check_password
 from django.views.decorators.http import require_POST
 from json import JSONEncoder,loads
 from web.models import User, Token
-from datetime import datetime
-from hashlib import sha256
+from .readCsv import readFileCsvFileDimensionsOfThreeGrain, readFileDimensionsOfSingleGrain, readFileDimensionsOfWingWalls
+from .helper import Draw_wing_walls, find_row, Draw_single_grain_culvert, Draw_Two_grain_culvert, Draw_Three_grain_culvert, find_rwo_wing_walls
+
+listTitlesSingleGrain, listValuesSingleGrain = readFileDimensionsOfSingleGrain()
+listTitlesThreeGrain, listValuesThreeGrain = readFileCsvFileDimensionsOfThreeGrain()
+listTitlesWingWalls, listValuesWingWalls = readFileDimensionsOfWingWalls()
 
 @csrf_exempt
 def register(request):
@@ -110,6 +114,87 @@ def whoami(request):
                 'data': this_user.username,
                 'code' : 200,
             }, encoder=JSONEncoder)
+
+        except Exception as e:
+
+            return JsonResponse({
+                'data': "token invalid!",
+                'code' : 404,
+            }, encoder=JSONEncoder)
+
+    else:
+
+        return JsonResponse({
+            'data': 'request not valid!',
+            'code': 401,
+        }, encoder=JSONEncoder)
+
+@csrf_exempt
+def Calculate(request):
+    "calculate datas for user a user"
+    #TODO: make this function for users to allow using culvert core
+
+    if request.method == 'POST':
+
+        encoded = request.body
+        json = loads(encoded.decode('utf-8'))
+
+        this_token = json['token']
+        ProjectName = json['ProjectName']
+        Number = int(json['Number'])
+        D = float(json['D'])
+        H = float(json['H'])
+        HS = float(json['HS'])
+        HLittle = float(json['h'])
+        
+        try:
+            this_user = get_object_or_404(User, token__token=this_token)
+
+            username = this_user.username
+
+            if Number == 3 or Number == 2 :
+                
+                # calculating 3-2 grain culvert parameters
+                threeGrain = find_row(D,H,HS,listValuesThreeGrain)
+                
+                # calculating 3-2 grain Wing Walls parameters
+                WingWalls = find_rwo_wing_walls(HLittle,listValuesWingWalls)
+
+                if Number == 2:
+
+                    # drawing 2 grain culvert and Draw wing walls
+                    if Draw_Two_grain_culvert(threeGrain,HS,ProjectName) and Draw_wing_walls(WingWalls,ProjectName) :
+
+                        return JsonResponse({
+                            'data': this_user.username,
+                            'code' : 200,
+                        }, encoder=JSONEncoder)
+
+                if Number == 3:
+
+                    # drawing 3 grain culvert and Draw wing walls
+                    if Draw_Three_grain_culvert(threeGrain,HS,ProjectName) and Draw_wing_walls(WingWalls,ProjectName) :
+                        
+                        return JsonResponse({
+                            'data': this_user.username,
+                            'code' : 200,
+                        }, encoder=JSONEncoder)
+
+            elif Number == 1 :
+                
+                # calculating 1 grain Wing Walls parameters
+                singleGrain = find_row(D,H,HS,listValuesSingleGrain)
+
+                # calculating 1 grain Wing Walls parameters
+                WingWalls = find_rwo_wing_walls(HLittle,listValuesWingWalls)
+
+                # drawing 3 grain culvert and Draw wing walls
+                if Draw_single_grain_culvert(singleGrain,HS,ProjectName) and Draw_wing_walls(WingWalls,ProjectName) :
+                    
+                    return JsonResponse({
+                        'data': this_user.username,
+                        'code' : 200,
+                    }, encoder=JSONEncoder)
 
         except Exception as e:
 
