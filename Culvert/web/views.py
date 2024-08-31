@@ -147,6 +147,7 @@ def Calculate(request):
         HS = float(json['HS'])
         HLittle = float(json['h'])
         
+        #TODO: handle if didnt found find_row and find_rwo_wing_walls (the return none)
         try:
             this_user = get_object_or_404(User, token__token=this_token)
 
@@ -206,7 +207,7 @@ def Calculate(request):
         return JsonResponse({
             'data': 'request not valid!',
             'code': 401,
-        }, encoder=JSONEncoder)
+        }, encoder=JSONEncoder, status_code=401)
 
 def index(request):
     return HttpResponse("Ok!")
