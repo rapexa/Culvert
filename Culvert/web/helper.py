@@ -1,7 +1,7 @@
 #!bin/bash/python3
 
-from dxf2img import DXF2IMG
-from config import *
+from .dxf2img import DXF2IMG
+from .config import *
 
 def generate_output_file(filenamePath,ProjectName):
 
