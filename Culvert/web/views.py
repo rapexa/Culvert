@@ -199,15 +199,15 @@ def Calculate(request):
 
             return JsonResponse({
                 'data': "token invalid!",
-                'code' : 404,
-            }, encoder=JSONEncoder)
+                'code' : 401,
+            }, encoder=JSONEncoder, status=401)
 
     else:
 
         return JsonResponse({
             'data': 'request not valid!',
-            'code': 401,
-        }, encoder=JSONEncoder, status_code=401)
+            'code': 403,
+        }, encoder=JSONEncoder, status=403)
 
 def index(request):
     return HttpResponse("Ok!")
