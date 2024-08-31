@@ -1,7 +1,11 @@
 #!bin/bash/python3
 
-from .dxf2img import DXF2IMG
-from .config import  *
+from dxf2img import DXF2IMG
+from config import *
+
+def generate_output_file(filenamePath,ProjectName):
+
+    return str(filenamePath) + '-' + ProjectName + ".dxf"
 
 def find_rwo_wing_walls(h,rows):
      
@@ -65,7 +69,7 @@ def Draw_wing_walls(WingWalls,ProjectName):
             
             content = content.replace(key+index, value)
 
-        OUTPUT_WING_WALLS_DXF_FILE_NAME = OUTPUT_WING_WALLS_DXF + '-' + ProjectName + ".dxf"
+        OUTPUT_WING_WALLS_DXF_FILE_NAME = generate_output_file(OUTPUT_WING_WALLS_DXF, ProjectName)
 
         with open(OUTPUT_WING_WALLS_DXF_FILE_NAME, "w") as f:
             f.write(content)
@@ -102,7 +106,7 @@ def Draw_single_grain_culvert(singleGrain,HS,ProjectName):
             
             content = content.replace(key+index, value)
 
-        OUTPUT_ONE_SPAN_CULVERT_DXF_FILE_NAME = OUTPUT_ONE_SPAN_CULVERT_DXF + '-' + ProjectName + ".dxf"
+        OUTPUT_ONE_SPAN_CULVERT_DXF_FILE_NAME = generate_output_file(OUTPUT_ONE_SPAN_CULVERT_DXF, ProjectName)
 
         with open(OUTPUT_ONE_SPAN_CULVERT_DXF_FILE_NAME, "w") as f:
             f.write(content)
@@ -144,7 +148,7 @@ def Draw_Two_grain_culvert(threeGrain,HS,ProjectName):
             
             content = content.replace(key+index, value)
 
-        OUTPUT_TWO_SPAN_CULVERT_DXF_FILE_NAME = OUTPUT_TWO_SPAN_CULVERT_DXF + '-' + ProjectName + ".dxf"
+        OUTPUT_TWO_SPAN_CULVERT_DXF_FILE_NAME = generate_output_file(OUTPUT_TWO_SPAN_CULVERT_DXF, ProjectName)
 
         with open(OUTPUT_TWO_SPAN_CULVERT_DXF_FILE_NAME, "w") as f:
             f.write(content)
@@ -186,7 +190,7 @@ def Draw_Three_grain_culvert(threeGrain,HS,ProjectName):
             
             content = content.replace(key+index, value)
 
-        OUTPUT_THREE_SPAN_CULVERT_DXF_FILE_NAME = OUTPUT_THREE_SPAN_CULVERT_DXF + '-' + ProjectName + ".dxf"
+        OUTPUT_THREE_SPAN_CULVERT_DXF_FILE_NAME = generate_output_file(OUTPUT_THREE_SPAN_CULVERT_DXF, ProjectName)
 
         with open(OUTPUT_THREE_SPAN_CULVERT_DXF_FILE_NAME, "w") as f:
             f.write(content)
