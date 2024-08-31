@@ -150,8 +150,6 @@ def Calculate(request):
         try:
             this_user = get_object_or_404(User, token__token=this_token)
 
-            username = this_user.username
-
             if Number == 3 or Number == 2 :
                 
                 # calculating 3-2 grain culvert parameters
